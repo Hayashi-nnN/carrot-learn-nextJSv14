@@ -10,6 +10,7 @@ import { z } from "zod"
 import bcrypt from "bcrypt"
 import { redirect } from "next/navigation"
 import getSession from "@/lib/session"
+import loginUser from "@/lib/login"
 
 // Check password is same with password confirmation
 const checkPassword = ({ password, confirmPassword }) =>
@@ -131,9 +132,7 @@ export async function createAccount(prevState, formData) {
 		})
 
 		// Session check, redirect
-		const session = await getSession()
-		session.id = user.id
-		await session.save()
+		await loginUser(user.id)
 		redirect("/profile")
 	}
 }

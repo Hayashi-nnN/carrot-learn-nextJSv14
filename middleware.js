@@ -5,14 +5,16 @@ const publicOnlyUrls = {
 	"/": true,
 	"/login": true,
 	"/sms": true,
-	"/create-account": true
+	"/create-account": true,
+	"/github/start": true,
+	"/github/complete": true
 }
 
 export async function middleware(request) {
-	const pathname = request.nextUrl.pathname
 	const session = await getSession()
 	const logined = Boolean(session.id)
-	const inPublic = publicOnlyUrls[pathname]
+
+	const inPublic = publicOnlyUrls[request.nextUrl.pathname]
 	const inPrivate = !inPublic
 
 	if (!logined) {

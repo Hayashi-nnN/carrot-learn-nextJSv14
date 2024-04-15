@@ -5,6 +5,7 @@ import db from "@/lib/db"
 import bcrypt from "bcrypt"
 import getSession from "@/lib/session"
 import { redirect } from "next/navigation"
+import loginUser from "@/lib/login"
 
 // email db
 const checkEmailExists = async email => {
@@ -62,9 +63,7 @@ export async function login(prevState, formData) {
 		)
 
 		if (checkPasswordResult) {
-			const session = await getSession()
-			session.id = user.id
-			await session.save()
+			await loginUser(user.id)
 			redirect("profile")
 		} else {
 			return {
